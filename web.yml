@@ -21,3 +21,4 @@ services:
       MYSQL_USER: anas
       MYSQL_PASSWORD: root1234
       MYSQL_DATABASE: db
+# test 1
