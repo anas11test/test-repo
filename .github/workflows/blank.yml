@@ -1,0 +1,16 @@
+name: Check Docker Compose
+on:
+  push:
+    branches:
+      - main
+jobs:
+  docker_test:
+    runs-on: self-hosted
+      self-hosted: Developpment-runner
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Build and Start Docker Compose web
+      run: sudo docker compose -f web.yml up -d
+    - name: Check Container Status
+      run: sudo docker ps
