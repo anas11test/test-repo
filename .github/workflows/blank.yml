@@ -10,6 +10,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
     - name: Build and Start Docker Compose web
-      run: docker compose --file web.yml up -d
+      run: docker compose -f web.yml up -d
     - name: Check Container Status
       run: docker ps
