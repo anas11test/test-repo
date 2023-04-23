@@ -12,23 +12,18 @@ jobs:
     - name: Build and Start Docker Compose web
       run: docker compose -f web.yml up -d
     - name: Check container status
-      id: check_status
-      run: |
-        status=$(docker compose -f web.yml ps -q phpmyadmin | xargs docker inspect --format='{{.State.Status}}')
-        if [[ $status == "running" ]]; then
-          echo "::set-output name=status::success"
-        else
-          echo "::set-output name=status::failure"
-        fi
+      run: docker ps
+    - name: Stop and Remove Containers
+      run: docker compose -f web.yml down
+    - name: Check container status
+      run: docker ps
   preproduction:
     needs: developpement
     runs-on: [self-hosted, linux, preprod]
-    #if: ${{ needs.developpement.outputs.check_status == 'success' }}
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
     - name: Build and Start Docker Compose web
       run: docker compose -f web.yml up -d
     - name: Check Container Status
-      run: docker ps  
-#test2
+      run: docker ps
