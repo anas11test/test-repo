@@ -25,7 +25,7 @@ jobs:
   preproduction:
     needs: developpement
     runs-on: [self-hosted, linux, preprod]
-    if: ${{ job.developpement.outputs.status == 'success' }}
+    if: ${{ needs.developpement.outputs.check_status == 'success' }}
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
