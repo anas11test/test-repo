@@ -9,11 +9,12 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-    - name: Build and Start Docker Compose web
-      run: docker compose -f web.yml up -d
+    #- name: Build and Start Docker Compose web
+    #  run: docker compose -f web.yml up -d
     - name: Check container status
       id: check_status
       run: |
+        service_name=$(grep -e "^ *service_name:" web.yml | awk '{print $2}')
         status=$(docker compose -f web.yml ps -q phpmyadmin | xargs docker inspect --format='{{.State.Status}}')
         if [[ $status == "running" ]]; then
           echo "::set-output name=status::success"
@@ -23,7 +24,7 @@ jobs:
   preproduction:
     needs: developpement
     runs-on: [self-hosted, linux, preprod]
-    if: ${{ jobs.developpement.outputs.check_status == 'success' }}
+    if: ${{ needs.developpement.outputs.check_status == 'success' }}
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
